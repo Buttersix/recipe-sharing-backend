@@ -3,6 +3,7 @@ const mongoose = require('mongoose')
 const postSchema = mongoose.Schema({
   user: String,
   message: String,
+  date: String,
   upvotes: {
     type: Number,
     default: 0,
