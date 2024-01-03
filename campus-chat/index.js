@@ -1,37 +1,38 @@
-require('dotenv').config()
-const serverless = require('serverless-http')
-const express = require('express')
-const app = express()
-const cors = require('cors')
-const mongoose = require('mongoose')
-const bodyParser = require('body-parser')
+import express from 'express';
+import mongoose from 'mongoose';
+import dotenv from 'dotenv';
+import cors from 'cors';
+import userRoute from './routes/user.route.js';
+import cookieParser from 'cookie-parser';
+import authRoute from './routes/auth.route.js';
 
-// IMPORTED ROUTES
-const postRoutes = require('./routes/posts')
+const app = express();
+dotenv.config();
 
-app.use(bodyParser.json({ limit: "30mb", extended: true }))
-app.use(bodyParser.urlencoded({ limit: "30mb", extended: true }))
-app.use(cors())
+mongoose.set('strictQuery', true);
+const connect = async () => {
+  try {
+    await mongoose.connect(process.env.MONGODB_URL)
+    console.log('Connected to mongodb')
+  } catch (error) {
+    console.log(error)
+  }
+}
+app.use(express.json())
+app.use(cookieParser())
+app.use(cors({ origin: ['http://localhost:5173', 'https://www.postupchat.com'], credentials: true}))
 
-const CONNECTION_URL = process.env.MONGODB_URL
+app.use('/api/users', userRoute)
+app.use('/api/auth', authRoute)
 
-mongoose.connect(CONNECTION_URL, { useNewUrlParser: true, useUnifiedTopology: true })
+app.use((err, req, res, next) => {
+  const errorStatus = err.status || 500
+  const errorMessage = err.message || "Something went wrong!"
 
-app.use('/posts', postRoutes)
+  return res.status(errorStatus).send(errorMessage)
+})
 
-app.use((req, res, next) => {
-  const error = new Error("Not found");
-  error.status = 404;
-  next(error);
-});
-
-app.use((error, req, res, next) => {
-  res.status(error.status || 500);
-  res.json({
-    error: {
-      message: error.message,
-    },
-  });
-});
-
-module.exports.handler = serverless(app)
+app.listen(8000, () => {
+  connect()
+  console.log('Server running')
+})
