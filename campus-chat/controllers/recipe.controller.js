@@ -15,7 +15,7 @@ export const uploadRecipe = async (req, res) => {
       message: 'Recipe uploaded successfully'
     })
   } catch (error) {
-    res.status(500).json({ message: 'Internal server error' })
+    res.status(500).json({ message: 'Internal server error', error: error.message })
   }
 }
 
@@ -35,6 +35,6 @@ export const like = async (req, res) => {
 
     res.status(200).json({ likes: recipe.likes })
   } catch (error) {
-    res.status(500).json({ message: 'Internal Server Error' })
+    res.status(500).json({ message: 'Internal Server Error', error: error.message })
   }
 }
