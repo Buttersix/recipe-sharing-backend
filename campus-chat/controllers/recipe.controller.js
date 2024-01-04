@@ -4,6 +4,10 @@ export const uploadRecipe = async (req, res) => {
   try {
     const { recipeName, ingredients, instructions } = req.body
 
+    if (!ingredients || !instructions) {
+      return res.status(400).json({ message: 'Ingredients and instructions are required' })
+    }
+
     const recipe = new Recipe({
       recipeName,
       ingredients,
