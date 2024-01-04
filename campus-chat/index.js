@@ -5,6 +5,7 @@ import cors from 'cors';
 import userRoute from './routes/user.route.js';
 import cookieParser from 'cookie-parser';
 import authRoute from './routes/auth.route.js';
+import recipeRoute from './routes/recipe.route.js';
 
 const app = express();
 dotenv.config();
@@ -24,6 +25,7 @@ app.use(cors({ origin: ['http://localhost:5173', 'https://www.postupchat.com'], 
 
 app.use('/api/users', userRoute)
 app.use('/api/auth', authRoute)
+app.use('/api/recipe', recipeRoute)
 
 app.use((err, req, res, next) => {
   const errorStatus = err.status || 500

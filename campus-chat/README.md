@@ -1,13 +1,5 @@
 # API Documentation
 
-### GET requests
-
-```
-/
-```
-
-Gets the post message from the Mongo DB
-
 ### POST requests
 
 ```
