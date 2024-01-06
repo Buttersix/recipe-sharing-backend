@@ -42,3 +42,13 @@ export const like = async (req, res) => {
     res.status(500).json({ message: 'Internal Server Error', error: error.message })
   }
 }
+
+export const getRecipe = async (req, res) => {
+  try {
+    const recipes = await Recipe.find()
+    res.json(recipes)
+  } catch (error) {
+    console.error('Error fetching recipes')
+    res.status(500).json({ message: 'Internal Server Error' })
+  }
+}
