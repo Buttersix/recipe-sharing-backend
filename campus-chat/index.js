@@ -21,7 +21,7 @@ const connect = async () => {
 }
 app.use(express.json())
 app.use(cookieParser())
-app.use(cors({ origin: ['http://localhost:5173', 'https://www.postupchat.com'], credentials: true}))
+app.use(cors({ origin: ['http://localhost:5173', 'https://main.d2yykcyab2dkig.amplifyapp.com'], credentials: true}))
 
 app.use('/api/users', userRoute)
 app.use('/api/auth', authRoute)
